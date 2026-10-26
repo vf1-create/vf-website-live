@@ -12,7 +12,8 @@
     email: "hi@virtualfudge.com", partners: "partnerships@virtualfudge.com", careers: "careers@virtualfudge.com", press: "pr@virtualfudge.com",
     phone: "+1 646 470 9997", tel: "+16464709997",          // the studio's number, confirmed by Vemir (7 Oct)
     book: "https://calendar.app.google/aTmHkh5B71PkiYVe7",
-    newsletter: "",   // Brevo's hosted sign-up page (its "Share" link, https://….sibforms.com/serve/…); empty = the email-app fallback
+    // Brevo's hosted sign-up page, form "Website newsletter" -> list "Website newsletter", double opt-in (made 26 Oct); "" = the email-app fallback
+    newsletter: "https://20d8c190.sibforms.com/serve/MUIFAMPXWGzD5XZJWYQ6r2o8_qxZeWLL8xuiLSaAl--UQOpoSDFBJI_XBzcP_Eh1vm-eCp4WXjK9BP4VSaL8GEbwV2DipCzjE_bVSJ0F5HhboQwVVB7e-Ta7YG8a9K4L0EsAKDcyYfe44t1TfTM4PgqNvlPYXItsUDv3il1JIVt2EDQEx8VY7NymtvPkwNdrANJ2hKAJyBjwD2B0",
     address: ["315 W. 57th St, Ste 308", "New York, NY 10019"],
     about: "We are a cross-disciplinary team in New York City, with experience in coding, design, art, marketing, and sales, and a deep understanding of consumer packaged goods.",
     about2: "We live to imagine what hasn’t been imagined yet, and to design for what exists and what’s coming.",   // VF's second sentence ("for" added; TK.md)
