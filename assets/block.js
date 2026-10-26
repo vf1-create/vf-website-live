@@ -33,6 +33,10 @@
   if (window.VF_STILLS !== true) try { gl = testFlag("gl1") ? null : canvas.getContext("webgl2", opts); isGL2 = !!gl; if (!gl) gl = canvas.getContext("webgl", opts) || canvas.getContext("experimental-webgl", opts); } catch (e) { gl = null; }
   // the block needs high precision in the fragment shader; a GPU without it gets the stills
   if (gl) { var hp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT); if (!hp || hp.precision < 16 || testFlag("lowp")) gl = null; }
+  // a computer drawing in software (no graphics card, a virtual machine, a blocked driver) can't run the block at all: it
+  // gets the stills before any shader is compiled (?test&soft keeps the block, to test the safeguards on such a renderer)
+  if (gl && !testFlag("soft")) { var ri = gl.getExtension("WEBGL_debug_renderer_info"), rn = ri ? String(gl.getParameter(ri.UNMASKED_RENDERER_WEBGL)) : "";
+    if (/swiftshader|basic render|llvmpipe|softpipe|software/i.test(rn)) gl = null; }
   var VS = "attribute vec2 p;varying vec2 vUv;void main(){vUv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}";
   function build(fsSrc, lazy) {
     var vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, VS); gl.compileShader(vs);
@@ -53,8 +57,21 @@
   var pcx = null, glReady = false, glT0 = 0, stillsWhy = "";
   function setupGL() {
     glT0 = performance.now(); glReady = false;
-    pcx = testFlag("syncgl") ? null : gl.getExtension("KHR_parallel_shader_compile");
-    try { scene = build(window.VFBlockShader, !!pcx); present = build(window.VFPresentShader, !!pcx); } catch (e) { if (window.console) console.warn(e); return false; }
+    pcx = testFlag("syncgl") || testFlag("nopcx") ? null : gl.getExtension("KHR_parallel_shader_compile");
+    // without background compiling (Firefox, some drivers), WebGL 2 still needn't wait: the card works through its commands
+    // in order, so a fence placed after the links signals when they are done, and the page asks nothing before then
+    var fenced = !pcx && isGL2 && !testFlag("syncgl");
+    try { scene = build(window.VFBlockShader, !!pcx || fenced); present = build(window.VFPresentShader, !!pcx || fenced); } catch (e) { if (window.console) console.warn(e); return false; }
+    if (fenced) {
+      var linked = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0); gl.flush();
+      var wait = setInterval(function () {
+        if (gl.isContextLost()) { clearInterval(wait); return; }
+        if (gl.getSyncParameter(linked, gl.SYNC_STATUS) === gl.SIGNALED) {
+          clearInterval(wait); gl.deleteSync(linked); if (finishGL()) { RW = RH = 0; resize(); kick(); } else toStills("shaders failed");
+        } else if (performance.now() - glT0 > 12000) { clearInterval(wait); toStills("shaders took over 12 s"); }
+      }, 40);
+      return true;
+    }
     if (!pcx) return finishGL();
     var poll = setInterval(function () {
       if (gl.isContextLost()) { clearInterval(poll); return; }
@@ -366,7 +383,32 @@
   // the GPU itself (a one-pixel read waits for it), not by the gap between frames, which a throttled browser stretches: a frame
   // that takes a quarter second cuts the size at once, and the third puts the page on its stills (as without WebGL). A machine
   // that keeps up never sees any of it
-  var proven = false, brakes = 0, okRun = 0, probeN = 0, probePx = new Uint8Array(4), warmPx = 4096, lastGms = 0;
+  var proven = false, brakes = 0, okRun = 0, probeN = 0, probePx = new Uint8Array(4), warmPx = 4096, lastGms = 0, fence = null;
+  // the speed check's verdict on one frame: grow toward full size while frames are quick, shrink when they are slow, and
+  // give up for the stills when the card can't keep up. True when it has switched to the stills.
+  function judge(gms, px) {
+    lastGms = gms; probeN++;
+    // the next frame may cost about 40 ms at this frame's rate, and at most four times this one's pixels
+    warmPx = Math.max(4096, Math.min(px * 4, 40 * px / Math.max(gms, 0.05)));
+    // one frame that long: the stills now (the first two frames include the driver's own shader set-up, so get longer)
+    if (gms > (probeN > 2 ? 1500 : 3000)) { toStills("frames too slow"); return true; }
+    if (probeN <= 2) return false;
+    if (gms > 250) {
+      okRun = 0; rs = Math.max(0.5, rs * 0.6); hiCap = Math.min(hiCap, 0.6); warmPx = Math.max(4096, px / 4);
+      if (++brakes >= 3) { toStills("frames too slow"); return true; }
+    } else if (gms < 60 && px >= 0.9 * W * H * rs * rs && ++okRun >= 5) { proven = true; acc = 0; rs = Math.min(Math.max(rs, phone ? 0.8 : 1.0), rsMax); }
+    return false;
+  }
+  function watchFence(f) {
+    var poll = setInterval(function () {
+      if (f !== fence || gl.isContextLost()) { clearInterval(poll); if (f === fence) fence = null; return; }
+      var ms = performance.now() - f.t0, done = gl.getSyncParameter(f.s, gl.SYNC_STATUS) === gl.SIGNALED;
+      if (!done && ms < (probeN >= 2 ? 1500 : 3000)) return;
+      clearInterval(poll); gl.deleteSync(f.s); fence = null;
+      if (document.hidden) return;   // a hidden tab's slowed timers say nothing about the card
+      if (!judge(done ? ms : 1e4, f.px)) kick();
+    }, 4);
+  }
   // in motion, the drawing size follows the GPU's own timing where the browser reports it (every 20th frame), aiming at about 8 ms
   var tq = null, tqQ = null, tqN = 0;
   var HALTON = [];
@@ -490,7 +532,7 @@
     // a refining frame that runs long backs the full-density size off for the rest of the visit
     if (hiNow && acc > 0 && rawDt < 0.5) { if (rawDt > 0.075) { if (++hiSlow >= 2) { hiCap = Math.max(0.6, hiCap * 0.85); hiSlow = 0; } } else hiSlow = 0; }
     var covered = pageStage && window.scrollY > H * 1.05;
-    if (glReady && acc < fmt.max && !drawOff && !covered) {
+    if (glReady && !fence && acc < fmt.max && !drawOff && !covered) {
       var probe = !proven && !locked && !reduce, t0 = probe ? performance.now() : 0;
       gl.useProgram(scene);
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, RW, RH);
@@ -533,16 +575,14 @@
       gl.uniform1i(PU.tex, 0); gl.uniform1f(PU.grain, 0.005); gl.uniform1f(PU.seed, seed); gl.uniform1f(PU.aa, acc <= 2 ? 1 : 0); gl.uniform2f(PU.px, 1 / RW, 1 / RH);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (probe) {
-        gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, probePx);   // waits for the GPU: the frame's real cost
-        var gms = testFlag("slowgpu") ? 400 : performance.now() - t0, px = RW * RH; lastGms = gms;
-        // the next frame may cost about 40 ms at this frame's rate, and at most four times this one's pixels
-        warmPx = Math.max(4096, Math.min(px * 4, 40 * px / Math.max(gms, 0.05)));
-        if (++probeN > 2) {   // the first two frames include the driver's own shader set-up
-          if (gms > 1500) brakes = 2;   // one frame that long: the stills now, not after two more
-          if (gms > 250) {
-            okRun = 0; rs = Math.max(0.5, rs * 0.6); hiCap = Math.min(hiCap, 0.6); warmPx = Math.max(4096, px / 4);
-            if (++brakes >= 3) { toStills("frames too slow"); return; }
-          } else if (gms < 60 && px >= 0.9 * W * H * rs * rs && ++okRun >= 5) { proven = true; acc = 0; rs = Math.min(Math.max(rs, phone ? 0.8 : 1.0), rsMax); }
+        var px = RW * RH;
+        if (isGL2 && !testFlag("slowgpu")) {
+          // the frame's real cost without waiting for it: a fence the card signals when it has finished, checked every few
+          // milliseconds off the frame loop; no new frame is drawn until then, so a slow card never builds a queue
+          fence = { s: gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0), t0: t0, px: px }; gl.flush(); watchFence(fence);
+        } else {
+          gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, probePx);   // WebGL 1 has no fences: wait for the card
+          if (judge(testFlag("slowgpu") ? 400 : performance.now() - t0, px)) return;
         }
       }
       if (!firstDrawn) { firstDrawn = true; document.documentElement.classList.add("ready"); }
