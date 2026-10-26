@@ -716,7 +716,7 @@ h1, h2, h3, .card-title, .post-title { text-wrap: balance; }   /* every heading'
 }
 /* under 580 tall (a phone with its browser's bars and a header above the page), the poems set a size smaller, so the longest
    plain line (Sports) clears the chapter index too (24 Oct) */
-@media (orientation: portrait) and (min-width: 341px) and (max-width: 480px) and (max-height: 580px) { .beat:not(.prologue):not(.finale) .verse { font-size: 12.5px; line-height: 1.5; } .beat:not(.prologue):not(.finale) .plain { font-size: 13.5px; } }
+@media (orientation: portrait) and (min-width: 341px) and (max-width: 480px) and (max-height: 580px) { .beat:not(.prologue):not(.finale) .verse { font-size: 12.5px; line-height: 1.5; } .beat:not(.prologue):not(.finale) .plain { font-size: 13.5px; line-height: 1.4; } }
 /* phones held sideways at 360 tall (older Androids, 640x360): both opening buttons on one row, above the fold (20 Oct) */
 @media (orientation: landscape) and (max-height: 380px) {
   .prologue .prologue-acts { flex-wrap: nowrap; }
