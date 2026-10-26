@@ -12,6 +12,7 @@
     email: "hi@virtualfudge.com", partners: "partnerships@virtualfudge.com", careers: "careers@virtualfudge.com", press: "pr@virtualfudge.com",
     phone: "+1 646 470 9997", tel: "+16464709997",          // the studio's number, confirmed by Vemir (7 Oct)
     book: "https://calendar.app.google/aTmHkh5B71PkiYVe7",
+    newsletter: "",   // Brevo's hosted sign-up page (its "Share" link, https://….sibforms.com/serve/…); empty = the email-app fallback
     address: ["315 W. 57th St, Ste 308", "New York, NY 10019"],
     about: "We are a cross-disciplinary team in New York City, with experience in coding, design, art, marketing, and sales, and a deep understanding of consumer packaged goods.",
     about2: "We live to imagine what hasn’t been imagined yet, and to design for what exists and what’s coming.",   // VF's second sentence ("for" added; TK.md)
@@ -526,8 +527,9 @@
   // in: project quotes to partnerships@, general questions to hi@, careers to careers@ (the routing in VF's "Website Form
   // Structure", the kit's docs/source/drive/forms-spec.md). Its longer multi-step quote form, as v42 ran it, is kept in
   // docs/source/forms-multistep-v42.js for when VF launches it.
-  // the newsletter: VF's own form words ("subscribe to our email newsletter", "Email address", "Subscribe"), on this site. Like the
-  // forms, it opens the visitor's email app addressed to the studio, until the production build has a list to post to.
+  // the newsletter: VF's own form words ("subscribe to our email newsletter", "Email address", "Subscribe"), on this site. Brevo
+  // only takes sign-ups behind its captcha, so Subscribe opens Brevo's sign-up page (STUDIO.newsletter) in a new tab with the
+  // address on the clipboard to paste; with no link set, it opens the visitor's email app addressed to the studio, like the forms.
   function newsForm(id) {
     return '<form class="news-form" novalidate><label for="' + id + '">Subscribe to our email newsletter</label><div class="news-field">' +
       '<input id="' + id + '" type="email" name="email" placeholder="Email address" autocomplete="email" required><button type="submit" class="book">Subscribe</button></div>' +
@@ -540,6 +542,15 @@
     var input = $("input", f), st = $(".news-status", f), v = input.value.trim();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { st.textContent = "Please check your email address."; input.setAttribute("aria-invalid", "true"); input.focus(); return; }
     input.removeAttribute("aria-invalid");
+    if (STUDIO.newsletter) {
+      var w = window.open(STUDIO.newsletter, "_blank");
+      if (w) w.opener = null; else { location.href = STUDIO.newsletter; return; }
+      st.textContent = "The sign-up page opened in a new tab: enter your address there to confirm.";
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(function () {
+        st.textContent = "The sign-up page opened in a new tab: paste your address there (it’s copied) to confirm.";
+      }, function () {});
+      return;
+    }
     location.href = "mailto:" + STUDIO.email + "?subject=" + encodeURIComponent("Newsletter") + "&body=" + encodeURIComponent("Please add me to the Virtual Fudge newsletter: " + v + "\n");
     st.textContent = "Your email app opened with your address. Send it, and you’re on the list.";
   });
