@@ -1152,7 +1152,9 @@
     if (postersIn) return; postersIn = true;
     document.querySelectorAll("video[data-poster]").forEach(function (v) { v.setAttribute("poster", v.getAttribute("data-poster")); v.removeAttribute("data-poster"); });
   }
-  if (document.readyState === "complete") setPosters(); else { window.addEventListener("load", setPosters); window.addEventListener("scroll", setPosters, { passive: true }); }
+  // (5 Nov: the first scroll or touch only, not the load: unseen, they were 320 KB of the first load PageSpeed counts)
+  ["scroll", "wheel", "touchstart", "keydown"].forEach(function (ev) { window.addEventListener(ev, setPosters, { passive: true, once: true }); });
+  if (window.scrollY > 0 || location.hash.length > 1) setPosters();
   // the block plays a feature's clip once its world has risen, and stops it as the world goes back into the paper
   window.VFClips = { play: function (v) { v.dataset.seen = "1"; if (autoplay && !v.dataset.stopped) tryPlay(v); }, stop: function (v) { delete v.dataset.seen; if (!v.paused) v.pause(); } };
   wireClips(document.getElementById("main"));
