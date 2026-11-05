@@ -19,7 +19,7 @@
     about2: "We live to imagine what hasn’t been imagined yet, and to design for what exists and what’s coming.",   // VF's second sentence ("for" added; TK.md)
     tagline: "Immersion that Converts",   // VF’s slogan (Vemir, 20 Oct)
     socials: [["LinkedIn", "https://www.linkedin.com/company/virtualfudge"], ["Instagram", "https://www.instagram.com/virtual_fudge/"], ["X", "https://x.com/virtual_fudge"],
-              ["Threads", "https://www.threads.net/@virtual_fudge"], ["TikTok", "https://www.tiktok.com/@virtualfudge"], ["Facebook", "https://www.facebook.com/virtualfudge"]]
+              ["Threads", "https://www.threads.net/@virtual_fudge"], ["TikTok", "https://www.tiktok.com/@virtualfudge"], ["YouTube", "https://www.youtube.com/@VirtualFudge"], ["Facebook", "https://www.facebook.com/virtualfudge"]]
   };
 
   // Vemir's required line (the kit's CLAUDE.md): verbatim, in About, after the existing paragraph
