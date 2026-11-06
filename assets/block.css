@@ -12,7 +12,7 @@
   --ink-quiet: rgba(26, 13, 5, .74);      /* plain lines, 8.1:1 */
   --ink-faint: rgba(26, 13, 5, .2);       /* idle index slices */
   --f-verse: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --f-serif: "Playfair", "Playfair Display", Georgia, "Times New Roman", serif;
+  --f-serif: "Playfair", "Playfair fallback", "Playfair fallback 2", "Playfair Display", Georgia, "Times New Roman", serif;
   --gutter: clamp(16px, 4vw, 64px);
   --colw: min(36vw, 560px);               /* the verse column beside the object */
   color-scheme: light;
