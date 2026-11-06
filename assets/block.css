@@ -932,3 +932,50 @@ h1, h2, h3, .card-title, .post-title { text-wrap: balance; }   /* every heading'
 .ar-cards-narrow .ar-card figcaption a { display: none; }
 .ar-cards-narrow .ar-card-tag { font-size: 10px; gap: 5px; justify-content: center; margin: 0 -8px; white-space: nowrap; }
 .ar-cards-narrow .ar-card-br { inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); }
+
+/* ---------- About us: a window on the story VF's first website told (Josh, 6 Nov 2026) ----------
+   Its opening scene in the old site's own paintings, played by the scroll (site.js, wirePeek): the green hand raises its phone
+   to the mountain, the other hand taps it, and the one-eyed monster appears on the screen. The AR frame stands round it as it
+   does round the team photo. The phone's window is measured from hand-phone.webp: its screen runs x 118 to 468 of 900 and
+   y 20 to 757 of 1403 */
+.peek { margin: 0; }
+.peek-win { position: relative; aspect-ratio: 2 / 1; max-height: 74vh; }
+.peek-scene { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; background: #EBC8BD; box-shadow: 0 24px 46px -28px rgba(26, 13, 5, .55); isolation: isolate; }
+.peek-scene img { position: absolute; display: block; max-width: none; height: auto; }
+.pk-sky { inset: 0; width: 100%; height: 100% !important; object-fit: cover; }
+.pk-mount { left: -3%; bottom: -20%; width: 70%; transform-origin: 50% 100%; will-change: transform; }
+.pk-clouds { left: -6%; bottom: -66%; width: 112%; will-change: transform; }
+.pk-phone { position: absolute; right: 16%; bottom: -40%; height: 108%; aspect-ratio: 900 / 1403; will-change: transform; }
+.pk-hand { inset: 0 auto auto 0; width: 100%; }
+.pk-screen { position: absolute; left: 13.1%; top: 1.4%; width: 39%; height: 52.6%; overflow: hidden; border-radius: 13% / 6%; }
+.pk-lens { position: absolute; inset: 0; background: url(../story/img/main-mount-mobile.webp) 50% 18% / 330% auto no-repeat, url(../story/img/sky-mobile.webp) 50% 50% / cover; }
+.peek-scene .pk-cyclop { inset: 0; width: 100%; height: 100% !important; object-fit: cover; object-position: 50% 30%; opacity: 0; transform-origin: 50% 40%; }
+.pk-tap { right: 30%; bottom: -40%; width: 30%; will-change: transform; }
+.peek-win .finder-lock { left: -8px; top: -8px; width: calc(100% + 16px); height: calc(100% + 16px); --l: 22px; transition: none; }
+/* the way in (Josh, 6 Nov: the click must be "the main thing"): the whole window is the link, and its button stands on the
+   painting from the first moment, on a card of paper over the clouds at the mountain's foot, where the scene keeps clear */
+.peek-win { display: block; color: var(--ink); text-decoration: none; cursor: pointer; }
+.peek-win:focus-visible { outline: 2px solid var(--brass); outline-offset: 12px; }
+.peek-call { position: absolute; z-index: 2; left: 4%; bottom: 7%; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: min(40%, 420px);
+  padding: 24px 26px 26px; border-radius: 3px; background: rgba(250, 246, 236, .94); box-shadow: 0 22px 40px -24px rgba(26, 13, 5, .55); }
+.peek-line { font: 400 clamp(20px, 1.7vw, 27px)/1.22 var(--f-serif); font-variation-settings: "opsz" 72; color: var(--ink); text-wrap: balance; }
+.peek-go { display: inline-flex; align-items: center; gap: 12px; min-height: 54px; padding: 0 26px 0 22px; border-radius: 2px; background: var(--espresso); color: var(--paper);
+  font: 500 18px/1 var(--f-serif); transition: background-color .2s ease, transform .3s cubic-bezier(.16, 1, .3, 1); }
+.peek-go svg { width: 15px; height: 15px; fill: var(--brass); flex: none; transition: transform .3s cubic-bezier(.16, 1, .3, 1); }
+.peek-win:hover .peek-go, .peek-win:focus-visible .peek-go { background: #3A2213; }
+.peek-win:hover .peek-go svg, .peek-win:focus-visible .peek-go svg { transform: translateX(3px); }
+.peek-win:active .peek-go { transform: translateY(1px); }
+/* still (reduced motion): the scene at its last moment, the monster on the screen and the tapping hand gone */
+.peek-win.still .pk-cyclop { opacity: 1; }
+.peek-win.still .pk-lens, .peek-win.still .pk-tap { opacity: 0; }
+@media (orientation: portrait), (max-width: 760px) {
+  .peek-win { aspect-ratio: 4 / 5; max-height: none; }
+  .pk-mount { left: -30%; width: 150%; bottom: 6%; }
+  .pk-clouds { left: -40%; width: 190%; bottom: -30%; }
+  .pk-phone { right: 4%; bottom: -26%; height: 100%; }
+  .pk-tap { right: 46%; bottom: -22%; width: 46%; }
+  .peek-win .finder-lock { --l: 14px; }
+  .peek-call { left: 10px; right: 10px; bottom: 10px; max-width: none; gap: 14px; padding: 18px 18px 18px; }
+  .peek-line { font-size: 19px; }
+  .peek-go { align-self: stretch; justify-content: center; min-height: 52px; font-size: 17px; }
+}

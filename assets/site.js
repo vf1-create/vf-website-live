@@ -443,10 +443,32 @@
       t.pins.map(function (p, k) { return '<span class="ar-pin ' + p[4] + '" style="--x:' + p[2] + "%;--y:" + p[3] + "%;--k:" + k + '" aria-hidden="true"><i></i><span class="ar-pin-tag">' + esc(p[0]) + "<small>" + esc(p[1]) + "</small></span></span>"; }).join("") +
       '<span class="finder-lock" aria-hidden="true"><span class="finder-scan"></span></span></div><figcaption class="finder-read"><span class="finder-tag"><i></i>Tracking</span><span class="finder-name">Our booth at NRF 2026</span></figcaption></figure>';
   }
+  // the story VF's first website told (Josh, 6 Nov 2026: "a preview (hopfully animated too) from the about us page and then
+  // allow those who want to continue"): its opening scene in a window, played by the scroll, as it was there. A hand raises a
+  // phone to the mountain, the other taps it, and the one-eyed monster appears. The whole painted story is its own page,
+  // /story/, ported from the old homepage; the paintings are that site's own (story/img). Under reduced motion it stands still
+  // at its last moment
+  var PEEK = "/story/img/";
+  function peekImg(n, w, cls, sizes) {
+    return '<img class="' + cls + '" src="' + PEEK + n + '.webp" srcset="' + PEEK + n + "-mobile.webp " + Math.round(w / 2) + "w, " + PEEK + n + ".webp " + w + 'w" sizes="' + sizes +
+      '" alt="" loading="lazy" decoding="async">';
+  }
+  // the whole window is the way in, and its button stands on the painting from the start (Josh, 6 Nov: "VERY unclear one
+  // should click in ... calling people's attention to it, which should be the main thing")
+  function storyPeek() {
+    return '<div class="peek"><a class="peek-win" href="/story/"><span class="peek-scene" aria-hidden="true">' +
+      peekImg("sky", 2091, "pk-sky", "(max-width: 760px) 100vw, 1200px") + peekImg("main-mount", 2273, "pk-mount", "(max-width: 760px) 90vw, 700px") +
+      peekImg("clouds", 1920, "pk-clouds", "(max-width: 760px) 120vw, 1300px") +
+      '<span class="pk-phone"><span class="pk-screen"><span class="pk-lens"></span>' + peekImg("hand-phone-cyclop", 563, "pk-cyclop", "(max-width: 760px) 30vw, 200px") + "</span>" +
+      peekImg("hand-phone", 900, "pk-hand", "(max-width: 760px) 45vw, 400px") + "</span>" + peekImg("left-hand", 900, "pk-tap", "(max-width: 760px) 40vw, 360px") +
+      '</span><span class="peek-call"><span class="peek-line">The story our first website told, in paintings.</span> ' +
+      '<span class="peek-go"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 2.8v10.4L13 8z"/></svg>Play the whole story</span></span>' +
+      '<span class="finder-lock" aria-hidden="true"><span class="finder-scan"></span></span></a></div>';
+  }
   function pageStudio() {
     return hero({ title: esc(HOME.about.title), lede: esc(HOME.about.text), lede2: esc(REQUIRED), acts: '<a class="book" href="#start">' + esc(HOME.about.btn) + "</a>" + BOOK })
         .replace(/<\/section>$/, teamPhoto() + "</section>").replace('<section class="page-hero">', '<section class="page-hero has-photo">') +
-      '<div class="page-body">' +
+      '<div class="page-body">' + sec(storyPeek(), "peek-sec") +
       sec("<h2>" + esc(HOME.problem.title) + "</h2>" + grid(HOME.problem.items) + '<p class="lead after-grid">' + esc(HOME.problem.close) + "</p>") +
       sec("<h2>" + esc(HOME.fly.title) + '</h2><p class="lead">' + esc(HOME.fly.text) + "</p>") +
       sec("<h2>" + esc(HOME.process.title) + '</h2><p class="lead">' + esc(HOME.process.sub) + '</p><ol class="steps">' + HOME.process.steps.map(function (s, k) {
@@ -1062,6 +1084,34 @@
       m.classList.add("ar-rv"); revealIo.observe(m);
     });
   }
+  // About's window on the old story: where the window stands in the screen is how far the scene has played (0 as its top comes
+  // in under the screen, 1 as its bottom leaves over the top), so scrolling back plays it back. Off screen it does nothing
+  var peekStop = null;
+  function wirePeek(root) {
+    if (peekStop) { peekStop(); peekStop = null; }
+    var w = $(".peek-win", root); if (!w) return;
+    if (REDUCE) { w.classList.add("still"); return; }
+    var phone = $(".pk-phone", w), tap = $(".pk-tap", w), cyc = $(".pk-cyclop", w), lens = $(".pk-lens", w), mount = $(".pk-mount", w), clouds = $(".pk-clouds", w), raf = 0;
+    function seg(p, a, b) { return Math.min(1, Math.max(0, (p - a) / (b - a))); }
+    function out(t) { return 1 - Math.pow(1 - t, 3); }
+    function draw() {
+      raf = 0;
+      var r = w.getBoundingClientRect(), vh = innerHeight;
+      if (r.bottom < -40 || r.top > vh + 40) return;
+      var p = seg(vh - r.top, 0, vh + r.height);
+      var up = out(seg(p, 0.1, 0.4)), reach = out(seg(p, 0.36, 0.5)) * (1 - seg(p, 0.56, 0.68)), pop = out(seg(p, 0.49, 0.57));
+      phone.style.transform = "translate3d(0, " + ((1 - up) * 78).toFixed(2) + "%, 0)";
+      tap.style.transform = "translate3d(" + ((1 - reach) * -18).toFixed(2) + "%, " + ((1 - reach) * 92).toFixed(2) + "%, 0)";
+      cyc.style.opacity = pop.toFixed(3); cyc.style.transform = "scale(" + (0.82 + 0.18 * pop).toFixed(3) + ")";
+      lens.style.opacity = (1 - pop).toFixed(3);
+      mount.style.transform = "translate3d(0, " + ((1 - seg(p, 0, 0.6)) * 6).toFixed(2) + "%, 0) scale(" + (1.06 - 0.06 * seg(p, 0, 0.6)).toFixed(3) + ")";
+      clouds.style.transform = "translate3d(" + ((p - 0.5) * 6).toFixed(2) + "%, 0, 0)";
+    }
+    function ask() { if (!raf) raf = requestAnimationFrame(draw); }
+    window.addEventListener("scroll", ask, { passive: true }); window.addEventListener("resize", ask);
+    draw();
+    peekStop = function () { window.removeEventListener("scroll", ask); window.removeEventListener("resize", ask); if (raf) cancelAnimationFrame(raf); };
+  }
   // the project cards: each rises into place and its frame locks on as it comes into view; its clip plays under the pointer, or,
   // on a touch screen, while it is the card most in view
   var cardIo = null, cardPlayIo = null;
@@ -1209,7 +1259,7 @@
       pages.hidden = false; root.classList.add("on-page"); root.classList.toggle("page-plain", !r.stage);
       if (skip) skip.textContent = "Skip to the content";
       wireGalleries(pages);
-      wireFinder(pages); wireCards(pages); wireReveal(pages);
+      wireFinder(pages); wireCards(pages); wireReveal(pages); wirePeek(pages);
       document.title = r.title + ", Virtual Fudge";
       if (window.VFStage) window.VFStage.page(r.stage || false);
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -1219,7 +1269,7 @@
     }
     if (current !== null || first) {
       unwireClips(pages);
-      pages.hidden = true; pages.innerHTML = ""; wireFinder(pages); wireCards(pages); wireReveal(pages); root.classList.remove("on-page", "page-plain");
+      pages.hidden = true; pages.innerHTML = ""; wireFinder(pages); wireCards(pages); wireReveal(pages); wirePeek(pages); root.classList.remove("on-page", "page-plain");
       if (skip) skip.textContent = skipHome;
       document.title = baseTitle;
       if (window.VFStage) window.VFStage.page(null);
