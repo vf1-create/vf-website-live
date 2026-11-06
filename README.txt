@@ -1,8 +1,9 @@
 The new Virtual Fudge website - complete, ready to load
 =======================================================
 
-What this is: the whole site in one folder. index.html (the site), the
-assets folder (all pictures, films and code), favicon.ico, robots.txt,
+What this is: the whole site in one folder. index.html (the site), a page
+for every industry, project and blog post, the assets folder (all
+pictures, films and code), favicon.ico, robots.txt,
 the sitemaps, 404.html, and a folder for every address the old site had,
 so old links, bookmarks and Google results keep working.
 

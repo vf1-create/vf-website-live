@@ -1,0 +1,419 @@
+<!doctype html><html lang="en" data-route="blog-agentic-commerce-ar" data-home-title="Virtual Fudge – Immersion that Converts"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Agentic commerce needs a confirmation layer. That is where AR fits., Virtual Fudge</title><meta name="description" content="AI agents are getting good at recommending products. They cannot make a shopper believe. Here is where augmented reality fits into agentic commerce, and what brands should build."><link rel="canonical" href="https://virtualfudge.com/blog/agentic-commerce-ar/"><meta name="theme-color" content="#FAF6EC"><meta property="og:type" content="article"><meta property="og:site_name" content="Virtual Fudge"><meta property="og:url" content="https://virtualfudge.com/blog/agentic-commerce-ar/"><meta property="og:title" content="Agentic commerce needs a confirmation layer. That is where AR fits."><meta property="og:description" content="AI agents are getting good at recommending products. They cannot make a shopper believe. Here is where augmented reality fits into agentic commerce, and what brands should build."><meta property="og:image" content="https://virtualfudge.com/assets/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Virtual Fudge logo and a block of fudge: We create mind-bogglingly useful, non-gimmicky AR, MR and XR experiences."><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@virtual_fudge"><link rel="icon" href="/assets/favicon-32.png" sizes="32x32"><link rel="icon" href="/assets/favicon-192.png" sizes="192x192"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"></head><body><!-- warp: the transporter, the first moment of a visit (Vemir, 28 Oct: "a surreal immersive transporter a la Space Odyssey
+     as a loading screen, minimalist"). Light streams toward you on two walls with a dark slit between them, as in 2001's
+     Star Gate, while the block loads; then it floods to paper and the page is there. Drawn in CSS only, so it keeps moving
+     while the page's own code starts, with no graphics card too. Once per visit (per tab), whatever the computer's motion
+     setting (28 Oct: "work anyway agnostically"); never in high contrast or with ?test (?warp shows it anyway); a click, a tap or a key arrives at once. The password screen starts it and the page
+     carries it on from the same moment and the same streaks (tools/lock-site.py copies this block there). -->
+<style>
+/* the walls' own light, brass and caramel at the near edges, dark at the slit: painted once and never animated, so the only
+   things that move are the thin streaks and, at the end, three plain fades (cheap for any computer, with or without a
+   graphics card: Windows laptops on their built-in or no GPU included) */
+.warp { display: none; position: fixed; inset: 0; z-index: 100; overflow: hidden; contain: strict;
+  background: linear-gradient(90deg, rgba(181, 120, 42, .2), rgba(181, 120, 42, 0) 36%, rgba(199, 123, 107, 0) 64%, rgba(217, 163, 91, .17)), #0C0603; }
+.warp-on .warp { display: block; }
+.warp-fade .warp { animation: vf-warp-in .45s ease-out both; }
+/* the cap, kept by the browser's own animation thread: a phone busy reading the page (or a computer compiling the block)
+   can hold up the script that ends the journey, never this fade (Vemir, 28 Oct, on his phone: "goes way too long"). Opacity
+   alone, so the browser can run it off the page's thread (a visibility in the same keyframes kept it on the page's thread,
+   and a 5 s freeze held the dark for all 5 s); then a second, instant one takes it out of the way of clicks */
+.warp-on .warp { animation: vf-warp-cap .4s ease-in var(--cap, 3.1s) forwards, vf-warp-off 0s linear calc(var(--cap, 3.1s) + .4s) forwards; }
+.warp-on.warp-fade .warp { animation: vf-warp-in .45s ease-out both, vf-warp-cap .4s ease-in var(--cap, 3.1s) forwards, vf-warp-off 0s linear calc(var(--cap, 3.1s) + .4s) forwards; }
+.warp-field { position: absolute; inset: 0; }
+/* one streak: it starts at the slit, far away and faint, and speeds up and lengthens as it comes past */
+.warp-field i { position: absolute; left: 50%; top: 50%; width: var(--l); height: var(--h); margin-top: calc(var(--h) / -2); border-radius: var(--h); transform-origin: 0 50%; opacity: 0;
+  background: linear-gradient(90deg, rgba(var(--c), 0), rgba(var(--c), 1) 84%, rgba(var(--c), .4)); animation: vf-streak var(--d) cubic-bezier(.62, 0, .96, .6) var(--w) infinite; }
+.warp-glow, .warp-flash { position: absolute; inset: 0; opacity: 0; }
+.warp-glow { background: radial-gradient(closest-side, #FAF6EC, #FAF6EC 24%, rgba(245, 237, 216, .9) 42%, rgba(217, 163, 91, .45) 70%, rgba(181, 120, 42, 0)); transform: scale(.5); }
+.warp-flash { background: #FAF6EC; }
+/* the arrival: everything rushes past, the light at the end floods the screen, and the page is under it */
+.warp-out .warp-field { transform: scale(1.9); transition: transform .56s cubic-bezier(.55, 0, 1, .45); }
+.warp-out .warp-glow { opacity: 1; transform: scale(1.9); transition: opacity .16s ease-out, transform .5s cubic-bezier(.55, 0, .9, .55); }
+.warp-out .warp-flash { opacity: 1; transition: opacity .2s ease-in .32s; }   /* the even paper only once the light has filled the screen */
+.warp-gone .warp { background: none; pointer-events: none; }
+.warp-gone .warp-field, .warp-gone .warp-glow { visibility: hidden; }
+.warp-gone .warp-flash { opacity: 0; transition: opacity .5s ease; }
+/* a computer that gets the stills arrives in two thirds of the time */
+.warp-fast.warp-out .warp-field { transition-duration: .36s; }
+.warp-fast.warp-out .warp-glow { transition-duration: .1s, .32s; }
+.warp-fast.warp-out .warp-flash { transition-duration: .14s; transition-delay: .2s; }
+.warp-fast.warp-gone .warp-flash { transition-duration: .34s; }
+@keyframes vf-streak { 0% { opacity: 0; transform: rotate(var(--a)) translateX(var(--r0)) scaleX(.04); } 22% { opacity: var(--o); }
+  100% { opacity: var(--o); transform: rotate(var(--a)) translateX(var(--r1)) scaleX(1); } }
+@keyframes vf-warp-in { from { opacity: 0; } }
+@keyframes vf-warp-cap { to { opacity: 0; } }
+@keyframes vf-warp-off { to { visibility: hidden; } }
+@media (forced-colors: active) { .warp { display: none !important; } }   /* Windows high contrast: straight to the page */
+</style>
+<div class="warp" id="warp" aria-hidden="true"><div class="warp-field"></div><div class="warp-glow"></div><div class="warp-flash"></div></div>
+<script>
+(function () {
+  "use strict";
+  var d = document.documentElement, el = document.getElementById("warp"), field = el.firstChild, q = location.search;
+  var calm = !!(window.matchMedia && window.matchMedia("(forced-colors: active)").matches);   // high contrast repaints its colours
+  var t0 = 0, seed = 1, on = false, over = false, loaded = false, timer = 0, EV = ["pointerdown", "keydown", "wheel", "touchstart"];
+  function get(k) { try { return window.sessionStorage.getItem(k); } catch (e) { return null; } }
+  function put(k, v) { try { if (v === null) window.sessionStorage.removeItem(k); else window.sessionStorage.setItem(k, v); } catch (e) {} }
+  // the same seed draws the same streaks, so the page carries on the password screen's journey exactly
+  function rand(s) { return function () { s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function draw(lag) {
+    var r = rand(seed), W = window.innerWidth || 1280, H = window.innerHeight || 800, M = Math.max(W, H), n = Math.min(W, H) < 700 ? 72 : 96, out = "";
+    var top = Math.min(72, Math.max(54, Math.atan2(H, W) * 180 / Math.PI + 8));   // how steep a streak may run: taller screens, steeper
+    // paper, cream, brass, caramel, a dusty rose and VF's AR blue, in the shares they are drawn
+    var C = [["250, 246, 236", .2], ["245, 237, 216", .2], ["181, 120, 42", .26], ["217, 163, 91", .18], ["199, 123, 107", .08], ["55, 138, 221", .08]];
+    for (var i = 0; i < n; i++) {
+      var a = (r() * 2 - 1) * top, c = r(), k = 0; while (k < C.length - 1 && (c -= C[k][1]) > 0) k++;
+      var cs = Math.cos(a * Math.PI / 180), sn = Math.abs(Math.sin(a * Math.PI / 180));
+      var r0 = M * (.025 + r() * .07) / cs, edge = Math.min(W / 2 / cs, sn > .001 ? H / 2 / sn : 1e9);
+      var wide = r() < .1, h = wide ? 6 + r() * 10 : r() < .2 ? 2 : 1, o = wide ? .06 + r() * .09 : .25 + r() * .6;
+      var dur = .55 + r() * .8, len = M * (.12 + r() * r() * .45);
+      out += '<i style="--a:' + (i % 2 ? 180 + a : a).toFixed(2) + "deg;--r0:" + r0.toFixed(1) + "px;--r1:" + (edge * 1.04).toFixed(1) + "px;--l:" + len.toFixed(1) +
+        "px;--h:" + h.toFixed(1) + "px;--o:" + o.toFixed(2) + ";--c:" + C[k][0] + ";--d:" + dur.toFixed(3) + "s;--w:" + (r() * .35 - lag).toFixed(3) + 's"></i>';
+    }
+    field.innerHTML = out;
+  }
+  // each streak leaves the slit in the first third of a second; a page carrying the journey on starts them that far along
+  function begin(lag) { on = true; draw(lag); el.style.setProperty("--cap", Math.max(0.2, 3.1 - lag).toFixed(2) + "s"); d.classList.add("warp-on"); }
+  function arrive(fast) {
+    if (!on || over) return; over = true; clearInterval(timer);
+    EV.forEach(function (e) { window.removeEventListener(e, skip, true); });
+    d.classList.remove("warp-fade"); if (fast) d.classList.add("warp-fast"); d.classList.add("warp-out");
+    setTimeout(function () { d.classList.add("warp-gone"); }, fast ? 340 : 520);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); d.classList.remove("warp-on", "warp-out", "warp-gone", "warp-fast"); }, fast ? 700 : 1050);
+  }
+  function skip() { if (Date.now() - t0 > 300) arrive(); }
+  // the page is there when the block has drawn its first frame, and what the first screen shows is in: the fonts, and any
+  // picture actually on that screen (on a phone's data the whole page's pictures, further down, kept it waiting to its limit:
+  // Vemir, 28 Oct, "on my phone the transporter goes way too long"); never sooner than 0.7 seconds into the journey, never
+  // later than 2.6 (Vemir, 28 Oct: "a short transporter animation"), so a quick computer is on the page in about 1.7 s all
+  // told. A computer that gets the stills (no graphics card, or one too weak for the block: many a Windows laptop) is a slow
+  // one, so it gets its page, every picture in, as soon as that's known, from 0.45, and arrives in two thirds of the time
+  function seen(n) {
+    for (; n && n.nodeType === 1; n = n.parentNode) { var s = window.getComputedStyle(n); if (s.display === "none" || s.visibility === "hidden" || +s.opacity < 0.05) return false; }
+    return true;
+  }
+  function firstScreen() {
+    var f = document.fonts, busy = false, any = false, pf = false, im = document.images, W = window.innerWidth, H = window.innerHeight;
+    if (f && f.forEach) f.forEach(function (x) { if (x.status === "loading") busy = true; if (/Playfair/.test(x.family)) { any = true; if (x.status === "loaded") pf = true; } });
+    if (busy || (any && !pf)) return false;
+    for (var i = 0; i < im.length; i++) {
+      if (im[i].complete) continue;
+      var r = im[i].getBoundingClientRect();
+      if (r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W && seen(im[i])) return false;
+    }
+    return true;
+  }
+  function check() {
+    var t = Date.now() - t0, cl = d.classList, still = cl.contains("no-gl");
+    if (t > 2600 || (t > 700 && (cl.contains("ready") || cl.contains("page-plain")) && (loaded || firstScreen())) || (loaded && t > 450 && still)) arrive(still);
+  }
+  // on the password screen (its own html is marked; the page written in its place is not): it starts when the password
+  // opens the page (or a remembered key is about to), and stops if not
+  if (d.hasAttribute("data-lock")) {
+    window.VFWarp = {
+      start: function (fade) {
+        if (on) return true;
+        if (calm || get("vf-warp")) return false;
+        t0 = Date.now(); seed = Math.floor(Math.random() * 2147483646) + 1; put("vf-warp", "1"); put("vf-warp-t0", t0 + ":" + seed);
+        if (fade) d.classList.add("warp-fade");
+        begin(0); el.style.setProperty("--cap", "6s"); return true;   // the screen itself is light: its cap only for a decrypt that hangs
+      },
+      stop: function () { on = false; d.classList.remove("warp-on", "warp-fade"); field.innerHTML = ""; put("vf-warp", null); put("vf-warp-t0", null); }
+    };
+    return;
+  }
+  var hand = /^(\d+):(\d+)$/.exec(get("vf-warp-t0") || ""), now = Date.now(); put("vf-warp-t0", null);
+  if (hand && now >= +hand[1] && now - hand[1] < 15000) { t0 = +hand[1]; seed = +hand[2]; }
+  else if (!calm && (/[?&]warp\b/.test(q) || (!/[?&]test\b/.test(q) && !get("vf-warp")))) { t0 = now; seed = Math.floor(Math.random() * 2147483646) + 1; put("vf-warp", "1"); }
+  else { el.parentNode.removeChild(el); return; }
+  begin((now - t0) / 1000);
+  EV.forEach(function (e) { window.addEventListener(e, skip, { capture: true, passive: true }); });
+  window.addEventListener("load", function () { loaded = true; check(); });
+  timer = setInterval(check, 100);
+})();
+</script>
+<!-- /warp -->
+<!-- the two faces live with the site (Google Fonts' own files, 4 Nov 2026): no request leaves virtualfudge.com to set the type,
+     so it shows the same on every network, firewall and privacy setting. Set here, not in block.css, because the locked
+     copy inlines block.css into the page, which would shift a stylesheet-relative path. -->
+<link rel="preload" href="/assets/fonts/playfair-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/dm-mono-400-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/dm-mono-400-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/assets/fonts/dm-mono-500-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/assets/fonts/dm-mono-500-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Playfair"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/playfair-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Playfair"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/playfair-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+/* Until Playfair arrives, Georgia (Apple, Windows) or Times New Roman stands in, scaled to Playfair's width and height so the
+   lines wrap the same and nothing moves when it swaps in (6 Nov: the phone headline went from four lines to three, a 0.10 shift). */
+@font-face { font-family: "Playfair fallback"; src: local("Georgia"); size-adjust: 90.6%; ascent-override: 98.2%; descent-override: 34.2%; line-gap-override: 0%; }
+@font-face { font-family: "Playfair fallback 2"; src: local("Times New Roman"), local("TimesNewRomanPSMT"); size-adjust: 99%; ascent-override: 89.9%; descent-override: 31.3%; line-gap-override: 0%; }
+</style>
+<link rel="stylesheet" href="/assets/block.css?v=99b92787bb">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Virtual Fudge", "url": "https://virtualfudge.com/", "email": "hi@virtualfudge.com", "telephone": "+1-646-470-9997", "slogan": "Immersion that Converts", "address": {"@type": "PostalAddress", "streetAddress": "315 W. 57th St, Suite 308", "addressLocality": "New York", "addressRegion": "NY", "postalCode": "10019", "addressCountry": "US"}, "sameAs": ["https://www.linkedin.com/company/virtualfudge", "https://www.instagram.com/virtual_fudge/", "https://www.tiktok.com/@virtualfudge", "https://www.youtube.com/@VirtualFudge", "https://x.com/virtual_fudge", "https://www.threads.net/@virtual_fudge", "https://www.facebook.com/virtualfudge"]}</script>
+
+<a class="skip" href="#retail">Skip to the chapters</a>
+
+<header class="top">
+  <a class="mark" href="#top" aria-label="Virtual Fudge, back to the top"><span class="mark-logo" data-logo></span></a>
+  <div class="top-acts">
+    <nav class="top-nav" aria-label="Main">
+      <a class="top-link" href="#industries" data-nav="industries">Industries</a>
+      <a class="top-link" href="#work" data-nav="work">Projects</a>
+      <a class="top-link" href="#shows" data-nav="shows">Events</a>
+      <a class="top-link" href="#studio" data-nav="studio">About us</a>
+      <a class="top-link" href="#blog" data-nav="blog">Blog</a>
+      <a class="top-link" href="#contact" data-nav="contact">Contact</a>
+    </nav>
+    <a class="book" href="#start">Get a quote</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-in">
+    <div class="menu-top">
+      <a class="mark" href="#top" aria-label="Virtual Fudge, back to the top"><span class="mark-logo" data-logo></span></a>
+      <button class="menu-close" type="button">Close</button>
+    </div>
+    <nav class="menu-main" aria-label="Pages">
+      <a href="#top" data-nav="home">Home</a>
+      <a href="#industries" data-nav="industries">Industries</a>
+      <a href="#work" data-nav="work">Projects</a>
+      <a href="#shows" data-nav="shows">Events</a>
+      <a href="#studio" data-nav="studio">About us</a>
+      <a href="#blog" data-nav="blog">Blog</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+      <a href="#start" data-nav="start">Get a quote</a>
+      <a href="#careers" data-nav="careers">Careers</a>
+    </nav>
+    <nav class="menu-ind" aria-label="Industries">
+      <a href="#for-retail">Retail</a><a href="#for-cpg">CPG</a><a href="#for-medicine">Healthcare</a><a href="#for-sports">Sports</a>
+      <a href="#for-events">Marketing</a><a href="#for-museums">Museums</a><a href="#for-training">Training</a>
+      <a href="#for-tourism">Tourism</a><a href="#for-gaming">Gaming</a><a href="#for-entertainment">Entertainment</a><a href="#for-realestate">Real estate</a>
+      <a href="#for-manufacturing">Manufacturing</a><a href="#for-education">Education</a>
+    </nav>
+    <div class="menu-contact">
+      <a class="book" href="https://calendar.app.google/aTmHkh5B71PkiYVe7" target="_blank" rel="noopener">Book a call<span class="sr"> (opens in a new tab)</span></a>
+      <a class="link" href="mailto:hi@virtualfudge.com">hi@virtualfudge.com</a>
+      <a class="link" href="tel:+16464709997">+1 646 470 9997</a>
+    </div>
+  </div>
+</div>
+
+<canvas id="stage" tabindex="0" aria-label="The fudge block. Press and hold Space, or press and hold on it, to make it real."></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="index" aria-label="Chapters">
+  <a href="#retail" data-i="1" aria-label="I. Virtual Try-On"></a>
+  <a href="#cpg" data-i="2" aria-label="II. Interactive Packaging"></a>
+  <a href="#medicine" data-i="3" aria-label="III. Medical Education"></a>
+  <a href="#sports" data-i="4" aria-label="IV. Fan Engagement"></a>
+  <a href="#events" data-i="5" aria-label="V. Brand Activations"></a>
+  <a href="#museums" data-i="6" aria-label="VI. Living Exhibits"></a>
+  <a href="#training" data-i="7" aria-label="VII. Workforce Training"></a>
+</nav>
+
+<p class="lost" id="lost" role="status" hidden>This slice went missing. The rest of the block is still here.</p>
+
+<main id="main">
+
+  <section class="beat prologue" id="top" data-beat="0">
+    <img class="still" src="/assets/stills/top.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h1 class="display">We create <span class="nw">mind-bogglingly</span> useful, <span class="nw">non-gimmicky</span> AR, MR&nbsp;&amp;&nbsp;XR experiences</h1>
+      <p class="plain">Every world starts as a block of fudge. Scroll down and watch this one turn into&nbsp;seven.</p>
+      <div class="acts prologue-acts"><a class="book" href="#retail">Let’s scroll</a><button type="button" class="reel-btn" data-reel><span class="reel-play" aria-hidden="true"></span>Watch the reel<span class="reel-len">1:44</span></button></div>
+      <p class="sr">A cube of fudge, lit in warm brass light, its top slice lifted slightly.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="retail" data-beat="1" aria-labelledby="h-retail">
+    <img class="still" src="/assets/stills/retail.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-retail" tabindex="-1"><span class="num" aria-hidden="true">I</span><span class="ch-name"><span class="sr">I. </span>Virtual Try-On</span></h2>
+      <p class="verse">Foot traffic is priceless.
+Point a phone at the window:
+try the lipstick on your own face,
+drop the sofa into your living room,
+and buy it knowing it fits.</p>
+      <p class="plain"><a href="#for-retail">Try-ons and 3D products that answer “will it fit?” before the fitting room does (and long before the returns desk).</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube unfolds into store shelving; one product lifts forward and turns.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="cpg" data-beat="2" aria-labelledby="h-cpg">
+    <img class="still" src="/assets/stills/cpg.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-cpg" tabindex="-1"><span class="num" aria-hidden="true">II</span><span class="ch-name"><span class="sr">II. </span>Interactive Packaging</span></h2>
+      <p class="verse">Shoppers want to try before they buy.
+Scan the box, and it comes alive:
+a story blooming out of the lid,
+the ingredients in 3D,
+and checkout one tap away.</p>
+      <p class="plain"><a href="#for-cpg">Packaging that talks back: one scan opens the brand’s story, the ingredients and the checkout.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes a carton; its lid opens and a small scene builds itself above it.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="medicine" data-beat="3" aria-labelledby="h-medicine">
+    <img class="still" src="/assets/stills/medicine.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-medicine" tabindex="-1"><span class="num" aria-hidden="true">III</span><span class="ch-name"><span class="sr">III. </span>Medical Education</span></h2>
+      <p class="verse">Healthcare doesn’t need hype;
+it needs clarity you can trust.
+AR steps laid over the device,
+a simulated patient to practice on,
+and details we never fudge.</p>
+      <p class="plain"><a href="#for-medicine">Clinical simulation, device training and bedside AR guides, built with your clinicians.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes a stylized beating heart; a scanning plane shows a cross-section.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="sports" data-beat="4" aria-labelledby="h-sports">
+    <img class="still" src="/assets/stills/sports.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-sports" tabindex="-1"><span class="num" aria-hidden="true">IV</span><span class="ch-name"><span class="sr">IV. </span>Fan Engagement</span></h2>
+      <p class="verse">Stadiums are loud.
+Your brand should be louder.
+Live stats floating over the field,
+a 3D view from your seat before you buy,
+and an AR hunt that ends in high fives.</p>
+      <p class="plain"><a href="#for-sports">Seat-view previews, second-screen stats, citywide AR hunts and sponsor mini-games, all tracked to tickets and merch. Game day, every day.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes a stadium bowl of tiny fans; a wave travels around it.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="events" data-beat="5" aria-labelledby="h-events">
+    <img class="still" src="/assets/stills/events.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-events" tabindex="-1"><span class="num" aria-hidden="true">V</span><span class="ch-name"><span class="sr">V. </span>Brand Activations</span></h2>
+      <p class="verse">Marketing has never been noisier,
+or harder to break through.
+So don’t shout. Let them play:
+an AR mirror that previews the result,
+a business card with a talking hologram.</p>
+      <p class="plain"><a href="#for-events">Booth-stoppers like our Magic Mirror and the Living Hologram: people play and share, and every scan can become a lead.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes a booth floor; drifting figures gather toward it and form a line.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="museums" data-beat="6" aria-labelledby="h-museums">
+    <img class="still" src="/assets/stills/museums.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-museums" tabindex="-1"><span class="num" aria-hidden="true">VI</span><span class="ch-name"><span class="sr">VI. </span>Living Exhibits</span></h2>
+      <p class="verse">The “do not touch” era is over.
+Point a phone at the marble
+and the paint comes back.
+Point it at the bones
+and the dinosaur walks again.</p>
+      <p class="plain"><a href="#for-museums">AR guides, multilingual docents and living exhibits that bring the archive out of storage, and tell you which stories keep visitors longest.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes a classical torso with missing pieces, which restore in brass and then in color.</p>
+    </div>
+  </section>
+
+  <section class="beat" id="training" data-beat="7" aria-labelledby="h-training">
+    <img class="still" src="/assets/stills/training.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="ch" id="h-training" tabindex="-1"><span class="num" aria-hidden="true">VII</span><span class="ch-name"><span class="sr">VII. </span>Workforce Training</span></h2>
+      <p class="verse">Let’s be honest: manuals are outdated.
+(Nobody read them anyway.)
+So we put AR steps on the machine,
+right where the hands are,
+until guessing turns into knowing.</p>
+      <p class="plain"><a href="#for-training">Step-by-step AR instructions right on the equipment for onboarding, assembly and maintenance, with every completed step logged for the audit.</a></p>
+      <p class="hint">Press and hold.</p>
+      <p class="sr">The cube becomes an exploded product assembly that puts itself together one part at a time.</p>
+    </div>
+  </section>
+
+  <section class="beat finale" id="yours" data-beat="8" aria-labelledby="h-yours">
+    <img class="still" src="/assets/stills/yours.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">
+    <div class="col">
+      <h2 class="display" id="h-yours" tabindex="-1">Seven wonders.<br>Yours might be the&nbsp;eighth.</h2>
+      <p class="plain finale-plain">We’re industry-agnostic: if you dream it, we can do&nbsp;it.</p>
+      <form class="sketch-form" id="sketch-form" novalidate>
+        <label for="sketch-in">Tell us briefly what you want, and we’ll cut you a sketch.</label>
+        <div class="field">
+          <input id="sketch-in" name="sketch" type="text" maxlength="140" autocomplete="off" placeholder="An AR menu for a rooftop bar">
+          <button type="submit" id="sketch-go">Cut me a sketch</button>
+        </div>
+      </form>
+      <div class="sketch" id="sketch" hidden>
+        <p class="sketch-title" id="sketch-title"></p>
+        <p class="verse" id="sketch-verse" aria-live="polite"></p>
+        <div class="acts">
+          <a class="book" data-book href="https://calendar.app.google/aTmHkh5B71PkiYVe7" target="_blank" rel="noopener">Bring this to a call<span class="sr"> (opens in a new tab)</span></a>
+          <button type="button" class="link" id="copy-link">Copy link</button>
+        </div>
+        <p class="copied" id="copied" role="status"></p>
+        <input class="share-url" id="share-url" type="text" readonly hidden aria-label="Link to this sketch">
+      </div>
+      <p class="sr">The pieces return to a cube, then become the sketch you describe.</p>
+    </div>
+  </section>
+</main>
+
+<div id="page" class="page" hidden><article><h1>Agentic commerce needs a confirmation layer. That is where AR fits.</h1><figure><img src="/assets/blog/agentic-commerce-ar-vf.jpg" width="1500" height="634" alt="Visitors try an AR demo on their phones at the Virtual Fudge booth, NRF 2026."></figure><p>A year ago, “AI agents will do your shopping” was a keynote slide. It is now a traffic source.</p><p>AI-referred traffic to US retail sites grew 393% year over year in the first quarter of 2026, according to <a href="https://www.paz.ai/agentic-commerce-statistics">Adobe Analytics</a>. Over the 2025 holiday season, <a href="https://www.entagl.com/blog/agentic-commerce-2026-ai-shopping-agents">Salesforce</a> measured AI and agents touching roughly 20% of retail sales, around $262 billion in spending. <a href="https://www.metarouter.io/post/agentic-commerce-trends-statistics">McKinsey</a> projects $3 to $5 trillion in global agent-mediated commerce by 2030, and <a href="https://www.metarouter.io/post/agentic-commerce-trends-statistics">Bain</a> expects 15% to 25% of US e-commerce to run through agentic channels by the same year.</p><p>Read the range rather than any single number. Different firms define “agentic” differently. But every forecast points the same direction, and the current data already backs it up.</p><p>So the strategic question for brands is no longer whether agents matter. It is narrower and more useful: what does an agent do well, what does it structurally fail at, and what should you build to cover the gap?</p><h2>What an agent is good at, and what it cannot do</h2><p>An AI agent is very good at narrowing. Give it a budget, a constraint, and a deadline, and it will search across retailers, compare specs, check reviews, verify availability, and hand back a short list. That is genuine work, done faster than a person would do it.</p><p><strong>What an agent cannot do is make you believe.</strong></p><p>There is a category of purchase where the last step is not evaluation, it is confidence. Will this shade suit my skin? Will this chair fit that corner? Will this frame look ridiculous on my face? An agent can tell you the answer is yes, with sources. It cannot show you.</p><p>That gap has a measurable cost. <a href="https://www.metarouter.io/post/agentic-commerce-trends-statistics"><strong>Mirakl</strong></a> found that 42% of customers abandon purchases because there is not enough product information. On the back end, US retail returns reached nearly $850 billion in 2025 according to the <a href="https://ecommercefastlane.com/ar-for-retail-use-cases-and-benefits-2026-shopify/"><strong>National Retail Federation</strong></a>, and a large share of those in apparel and beauty come down to the product not matching what the shopper pictured.</p><p>Agents make the front of the funnel faster. They do nothing about that.</p><h2>AR is the confirmation layer</h2><p>This is the useful way to think about augmented reality in an agentic world. Not as a competing discovery channel, and not as a marketing add-on. As the step between “the agent recommended this” and “I believe it.”</p><p>The pattern looks like this. The agent does the research and narrows to two or three options. The shopper opens the product page. Instead of a static gallery, they see the thing on themselves or in their space, in their lighting, in real time. Then they buy, or they do not, but either way they decide with information rather than hope.</p><p>The evidence for that final step is reasonably good. Shopify’s <a href="https://ecommercefastlane.com/ar-for-retail-use-cases-and-benefits-2026-shopify/">Gunner Kennels case</a> reported a 40% increase in order conversion and a 5% reduction in returns after adding a life-size 3D model that customers could place next to their own dog. A 2025 peer-reviewed study on AR cosmetic try-on, <a href="https://ecommercefastlane.com/ar-for-retail-use-cases-and-benefits-2026-shopify/">cited by Shopify</a>, found that it improves a shopper’s ability to evaluate a product and makes the purchase feel less risky.</p><p>Less risky is the operative phrase. That is exactly the job an agent leaves undone.</p><p>We built <a href="/projects/ar-cpg-ecommerce-noyah/">Noyah Cosmetics’ AR try-on</a> around this. Clean beauty, real shade range, and the oldest problem in online cosmetics: a shopper who cannot tell how a color will read on their own skin. Face tracking and color accuracy do not make the recommendation. They confirm it.</p><h2>The problem nobody is budgeting for yet</h2><p>Here is the part that should worry brand teams more than it currently does.</p><p>When an agent handles discovery, the brand loses the behavioral data that used to come with it. The browsing, the comparison, the hesitation, the refinement of what someone actually wants: all of that now happens inside the agent. What reaches the merchant is the add-to-cart event and nothing before it.</p><p>Attribution gets harder. Personalization gets thinner. The feedback loop that made your last three campaigns smarter starts to close.</p><p>AR is one of the few surfaces where that data still belongs to you. When someone opens a try-on or scans a package, every interaction is a first-party signal given voluntarily:</p><ul><li>Which shades or variants get compared against each other</li><li>How long someone stays with a product before deciding</li><li>Which features people zoom in on</li><li>The exact point where they hesitate and leave</li></ul><p>None of that is inferred or bought. It is observed, on your property, by your experience. In a market where the discovery layer is increasingly rented from someone else, an owned interaction surface is worth more than it was two years ago, and not only for the conversion it produces. If you want the framework for measuring it, we wrote about <a href="/blog/kpis-xr-marketing-campaign/"><strong>the KPIs that actually matter in an XR campaign</strong></a><strong>.</strong></p><h2>What to build, in order</h2><p>Three principles, in the order they matter.</p><p>Put the confirmation where the hesitation is. Not on the homepage, not in a campaign microsite. On the product page, on the packaging, at the exact moment someone is deciding. We wrote about <a href="/blog/ar-product-packaging/"><strong>the packaging version of this</strong></a> separately, because a box a shopper is already holding is the highest-intent surface most brands own and the one they use least.</p><p>Make it openable in one step. If confirmation requires a download, it is not confirmation, it is a second decision. WebAR runs in the mobile browser from a QR code or a link, which is the only version of this that survives contact with a real shopper. An agent that hands off to an app store install has handed off to nothing.</p><p>Instrument it from day one. The data described above only exists if you set it up to be captured. Retrofitting analytics onto a live AR experience is possible and annoying. Building it in costs nothing extra.</p><h2>Where this actually lands</h2><p>The loud version of the AI and AR story is that they merge into one interface: an assistant living in your glasses, narrating the world. That may happen. It is not a 2026 procurement decision.</p><p>The quiet version is more useful and available now. Agents are taking over the part of shopping that is research. That leaves brands competing on the part that is conviction. AR is the most direct tool anyone has for producing conviction at the moment of decision, and it runs on the phone every one of your customers is already holding.</p><p>The brands that treat AR as a novelty budget line will keep getting novelty results. The ones that treat it as the confirmation layer under an increasingly automated funnel will be the ones agents keep recommending, because their products come back less and convert more.</p><h2>Frequently asked questions</h2><p>What is agentic commerce? Agentic commerce is shopping carried out by an AI agent on a person’s behalf. Rather than browsing and comparing manually, the shopper states an intent and the agent researches options, compares them, and in some cases completes the transaction.</p><p>Does AR compete with AI shopping agents? No. They solve different problems. Agents narrow a large set of options down to a few. AR resolves the doubt that remains about the ones that are left. A brand that has one and not the other has an incomplete funnel.</p><p>Does AR still work if a customer arrives from an AI agent? Yes, and it matters more in that case. A shopper arriving on an agent’s recommendation has skipped their own research. The confirmation step is the only interaction they have with your brand before deciding.</p><p>What kind of AR should a brand build first? Whichever one sits closest to the point of hesitation in your category. Beauty and eyewear start with try-on. CPG usually starts with packaging. Furniture and hardware start with placement. Build the one that answers the question your customers actually ask before buying.</p><p>Do customers need to download an app? Not for WebAR. It runs in the mobile browser from a QR code, a link, or a product page. That matters, because a download requirement is enough friction to lose most of the traffic it is meant to convert.</p><p>What can a brand actually measure from an AR experience? Opens, dwell time, variant or shade comparisons, feature-level interaction, drop-off points, and add-to-cart behavior for users who engaged versus those who did not. All of it is first-party.</p><h3>Building the confirmation layer</h3><p>If shoppers are hesitating somewhere in your funnel, that hesitation is the business case. We build utility-first AR for CPG, retail, and enterprise, and it runs on the phone your customer already has.</p><p><strong>Sign up for a Virtual Fudge demo: <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC">30 min</a> or <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB">15 min</a> intro call</strong></p><p><strong><em>Virtual Fudge is a New York City augmented reality studio.</em></strong> <a href="/industries/ar-in-consumer-packaged-goods/"><strong><em>See our work</em></strong></a><strong><em>.</em></strong></p></article></div>
+
+<footer class="foot">
+  <nav class="sitemap" aria-label="Site">
+    <ul>
+      <li><a href="#top">Home</a></li>
+      <li><a href="#industries">Industries</a></li>
+      <li><a href="#work">Projects</a></li>
+      <li><a href="#shows">Events</a></li>
+      <li><a href="#studio">About us</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#start">Get a quote</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#legal">Privacy policy</a></li>
+    </ul>
+    <ul aria-label="Industries">
+      <li><a href="#for-retail">Retail</a></li>
+      <li><a href="#for-cpg">CPG</a></li>
+      <li><a href="#for-medicine">Healthcare</a></li>
+      <li><a href="#for-sports">Sports</a></li>
+      <li><a href="#for-events">Marketing</a></li>
+      <li><a href="#for-museums">Museums</a></li>
+      <li><a href="#for-training">Training</a></li>
+      <li><a href="#for-tourism">Tourism</a></li>
+      <li><a href="#for-gaming">Gaming</a></li>
+      <li><a href="#for-entertainment">Entertainment</a></li>
+      <li><a href="#for-realestate">Real estate</a></li>
+      <li><a href="#for-manufacturing">Manufacturing</a></li>
+      <li><a href="#for-education">Education</a></li>
+    </ul>
+    <address>315 W. 57th St, Ste 308<br>New York, NY 10019<br><a href="mailto:hi@virtualfudge.com">hi@virtualfudge.com</a><br><a href="tel:+16464709997">+1 646 470 9997</a></address>
+  </nav>
+  <form class="foot-news news-form" novalidate>
+    <label for="news-foot">Subscribe to our email newsletter</label>
+    <div class="news-field"><input id="news-foot" type="email" name="email" placeholder="Email address" autocomplete="email" required><button type="submit" class="book">Subscribe</button></div>
+    <p class="news-status" role="status"></p>
+  </form>
+  <div class="foot-logo">
+    <div class="logo-toy" id="logo-toy" tabindex="0" role="img" aria-label="The Virtual Fudge logo. Drag it to stretch it, and it springs back. Press Enter to give it a poke.">
+      <span class="logo-toy-svg"></span>
+    </div>
+    <p class="logo-toy-hint" aria-hidden="true">Grab the logo and pull.</p>
+  </div>
+  <ul class="foot-social" aria-label="Virtual Fudge elsewhere"><li><a href="https://www.linkedin.com/company/virtualfudge" target="_blank" rel="noopener">LinkedIn<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://www.instagram.com/virtual_fudge/" target="_blank" rel="noopener">Instagram<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://www.tiktok.com/@virtualfudge" target="_blank" rel="noopener">TikTok<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://www.youtube.com/@VirtualFudge" target="_blank" rel="noopener">YouTube<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://x.com/virtual_fudge" target="_blank" rel="noopener">X<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://www.threads.net/@virtual_fudge" target="_blank" rel="noopener">Threads<span class="sr"> (opens in a new tab)</span></a></li><li><a href="https://www.facebook.com/virtualfudge" target="_blank" rel="noopener">Facebook<span class="sr"> (opens in a new tab)</span></a></li></ul>
+  <p class="foot-tag">Immersion that Converts</p>
+  <p>&copy; 2026 Virtual Fudge – Bespoke Augmented Reality Studio Based in New York City</p>
+</footer>
+
+<script src="/assets/logo.js?v=1836380ed0"></script>
+<script src="/assets/block-shader.js?v=60012ac8f7"></script>
+<script src="/assets/vf-copy.js?v=a844c954ba"></script>
+<script src="/assets/blog.js?v=fb98b8379b"></script>
+<script src="/assets/site.js?v=cd18b3f46e"></script>
+<script src="/assets/block.js?v=b8a1fae2e4"></script>
+<script src="/assets/logo-toy.js?v=cf5cca773b"></script>
+</body></html>

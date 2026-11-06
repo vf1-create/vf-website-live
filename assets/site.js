@@ -1204,7 +1204,7 @@
   }
   // (5 Nov: the first scroll or touch only, not the load: unseen, they were 320 KB of the first load PageSpeed counts)
   ["scroll", "wheel", "touchstart", "keydown"].forEach(function (ev) { window.addEventListener(ev, setPosters, { passive: true, once: true }); });
-  if (window.scrollY > 0 || location.hash.length > 1) setPosters();
+  if (window.scrollY > 0 || location.hash.length > 1 || document.documentElement.getAttribute("data-route")) setPosters();
   // the block plays a feature's clip once its world has risen, and stops it as the world goes back into the paper
   window.VFClips = { play: function (v) { v.dataset.seen = "1"; if (autoplay && !v.dataset.stopped) tryPlay(v); }, stop: function (v) { delete v.dataset.seen; if (!v.paused) v.pause(); } };
   wireClips(document.getElementById("main"));
@@ -1230,7 +1230,13 @@
     return null;
   }
   document.documentElement.lang = "en";
-  var root = document.documentElement, pages = $("#page"), baseTitle = document.title, current = null;
+  var root = document.documentElement, pages = $("#page"), current = null;
+  // a page with its own address (/industries/ar-in-retail/, /blog/<slug>/: tools/build-public.py writes them) names its page in
+  // <html data-route> and keeps its own title there; the homepage's title rides along for the way back to it. Elsewhere the
+  // page is the part after the # as before, and the # links, once followed from such a page, lead back onto the homepage's.
+  var landPath = location.pathname, landRoute = root.getAttribute("data-route") || "", landTitle = document.title;
+  var baseTitle = root.getAttribute("data-home-title") || document.title;
+  function asked() { return (location.hash || "").replace(/^#/, "") || (location.pathname === landPath ? landRoute : ""); }
   var lostTimer = 0;
   // the skip link: on the homepage it jumps to the chapters; on a page it moves to that page's heading, never off the page
   var skip = $(".skip"), skipHome = skip ? skip.textContent : "";
@@ -1240,7 +1246,7 @@
     e.preventDefault(); h1.focus();
   });
   function go(first) {
-    var h = (location.hash || "").replace(/^#/, "");
+    var h = asked();
     var r = route(h), lost = $("#lost");
     // the header and the menu mark the section you are in
     var sec = h.indexOf("work") === 0 ? "work" : h === "industries" || h.indexOf("for-") === 0 ? "industries" : h === "journal" || h.indexOf("blog") === 0 ? "blog" : ["shows", "studio", "contact", "start", "careers"].indexOf(h) > -1 ? h : r ? "" : "home";
@@ -1260,7 +1266,7 @@
       if (skip) skip.textContent = "Skip to the content";
       wireGalleries(pages);
       wireFinder(pages); wireCards(pages); wireReveal(pages); wirePeek(pages);
-      document.title = r.title + ", Virtual Fudge";
+      document.title = h === landRoute && location.pathname === landPath ? landTitle : r.title + ", Virtual Fudge";
       if (window.VFStage) window.VFStage.page(r.stage || false);
       window.scrollTo({ top: 0, behavior: "instant" });
       if (!first) { var h1 = $("h1", pages); if (h1) h1.focus({ preventScroll: true }); }
@@ -1283,7 +1289,17 @@
     else if (h && h.indexOf("s.") !== 0) { lost.hidden = false; clearTimeout(lostTimer); lostTimer = setTimeout(function () { lost.hidden = true; }, 6000); }
     else if (!h && !first) window.scrollTo({ top: 0, behavior: "instant" });
   }
-  window.addEventListener("hashchange", function () { closeMenu(false); go(false); });
+  var seen = location.href;
+  function moved() { if (location.href === seen) return; seen = location.href; closeMenu(false); go(false); }
+  window.addEventListener("hashchange", moved);
+  window.addEventListener("popstate", moved);   // Back and Forward between a page's own address and the homepage's #
+  // on a page with its own address, a # link (#work, #blog-...) opens that page on the homepage's address, without a reload
+  document.addEventListener("click", function (e) {
+    if (location.pathname === "/" || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || a.target) return;
+    var href = a.getAttribute("href"); if (href.length < 2) return;
+    e.preventDefault(); history.pushState(null, "", "/" + href); moved();
+  });
   // the menu (narrower screens): the whole site, one tap away; Escape or Close returns to the page
   var menu = $("#menu"), menuBtn = $(".menu-btn");
   function openMenu() {
