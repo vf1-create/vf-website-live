@@ -883,23 +883,15 @@ window.VFBlog = [
    [
     "h",
     2,
-    "5. Understand the real budget range before you ask for quotes"
+    "5. Talk about budget before you ask for quotes"
    ],
    [
     "p",
-    "XR project costs vary wildly, and vague “it depends” answers waste everyone’s time. As a rough industry benchmark for 2026:"
-   ],
-   [
-    "ul",
-    [
-     "<strong>WebAR filters or simple try-on experiences:</strong> low five figures",
-     "<strong>Branded app-based AR with custom 3D assets:</strong> mid five figures to low six figures",
-     "<strong>Enterprise-grade spatial activations or ongoing platforms:</strong> six figures and up, often with a maintenance retainer"
-    ]
+    "XR project costs vary wildly, and vague “it depends” answers waste everyone’s time."
    ],
    [
     "p",
-    "A good agency will tell you where your ask falls on this spectrum in the first conversation, not after three rounds of discovery calls."
+    "A good agency will tell you what your ask involves in the first conversation, not after three rounds of discovery calls."
    ],
    [
     "h",
@@ -1281,6 +1273,10 @@ window.VFBlog = [
    [
     "p",
     "At Virtual Fudge, we believe the proof is in the pudding (or the fudge in our case). Ready to take a bite of the future? We’ve got plenty to share."
+   ],
+   [
+    "p",
+    "Sign up for a Virtual Fudge demo: <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC\">30 min</a> or <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB\">15 min</a> intro call"
    ]
   ]
  },
@@ -1467,6 +1463,10 @@ window.VFBlog = [
    [
     "p",
     "Ready to transform your beauty brand’s sales? Contact Virtual Fudge today to learn how we can create a cutting-edge virtual try-on experience for your customers."
+   ],
+   [
+    "p",
+    "Sign up for a Virtual Fudge demo: <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC\">30 min</a> or <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB\">15 min</a> intro call"
    ]
   ]
  },
@@ -1544,14 +1544,13 @@ window.VFBlog = [
     "ul",
     [
      "The problem: Traditional e-commerce leaves shoppers guessing how a shade will look on their specific skin tone.",
-     "The Virtual Fudge solution: We built a high-conversion AR try-on that lets users toggle between shades instantly, mimicking a real-life vanity mirror.",
-     "The result: By integrating AR directly into the CPG shopping flow, we helped Noyah Cosmetics drive engagement and dramatically lower friction at the “Add to Cart” stage."
+     "The Virtual Fudge solution: We built an AR try-on that lets users toggle between shades instantly, mimicking a real-life vanity mirror."
     ]
    ],
    [
     "h",
     3,
-    "Beyond products: AR that converts for Nios Skin Lab"
+    "Beyond products: a Magic Mirror for Nios Skin Lab"
    ],
    [
     "p",
@@ -1559,11 +1558,11 @@ window.VFBlog = [
    ],
    [
     "p",
-    "For many clients, electrolysis hair removal is an intimidating process. Fear of the unknown – “What will I actually look like?” – often prevents bookings. To remove that anxiety, we developed a Magic Mirror interface that gives Nios Skin Lab clients a playful way to see themselves with a full head of hair, or without it."
+    "For many people, electrolysis hair removal is an unfamiliar service. To make it approachable, we developed a Magic Mirror that gives Nios Skin Lab guests a playful way to see themselves with a full head of hair, or without it."
    ],
    [
     "p",
-    "By letting people engage with a fun, low-pressure tool, we eliminate the anxiety that stops them from booking a series of treatments. This Magic Mirror technology can now be adapted for high-end fashion boutiques, orthodontic consultations, and beyond – proving that augmented reality retail’s utility is limited only by imagination."
+    "A fun, low-pressure tool makes the service intuitive and approachable. This Magic Mirror technology can now be adapted for high-end fashion boutiques, orthodontic consultations, and beyond – proving that augmented reality retail’s utility is limited only by imagination."
    ],
    [
     "h",
@@ -1751,6 +1750,10 @@ window.VFBlog = [
    [
     "p",
     "<em>To help evaluate trusted AR partners, platforms like <a href=\"https://www.goodfirms.co/\">GoodFirms</a> publish verified reviews and rankings of AR and XR studios, so you can benchmark potential vendors before you commit. For our Virtual Fudge page, see <a href=\"https://www.goodfirms.co/company/virtual-fudge\">here</a>.</em>"
+   ],
+   [
+    "p",
+    "Sign up for a Virtual Fudge demo: <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC\">30 min</a> or <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB\">15 min</a> intro call"
    ]
   ]
  },
@@ -1843,6 +1846,10 @@ window.VFBlog = [
    [
     "p",
     "As XR technology continues to evolve, we can expect even more groundbreaking innovations and applications in the years to come. From entertainment and education to healthcare and business, XR has the potential to transform the way we live, work, and play. A new movement has arrived, and the change is here – stand with us and shape the future!"
+   ],
+   [
+    "p",
+    "Sign up for a Virtual Fudge demo: <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC\">30 min</a> or <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB\">15 min</a> intro call"
    ]
   ]
  },
@@ -2193,6 +2200,10 @@ window.VFBlog = [
    [
     "p",
     "The future is immersive; we’re looking forward to making it fudge-ing awesome!"
+   ],
+   [
+    "p",
+    "Sign up for a Virtual Fudge demo: <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3hkdlRzRG45xPiQLC14lF0yx6ZGy7G9YpkFf2ceTYROJiBpz-VhPRBppoVKeAUkrFa4x3H4BhC\">30 min</a> or <a href=\"https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1s8KiRR3wu-S3aUDc0rvLWh_httUlCpuraC64TkNpTVEIp-7oT2hnValg8t3s0TU3_lmXqZJCB\">15 min</a> intro call"
    ]
   ]
  }
