@@ -1951,7 +1951,7 @@ window.VFBlog = [
    ],
    [
     "p",
-    "The term comes from a 1994 paper by Paul Milgram and Fumio Kishino, <a href=\"https://search.ieice.org/bin/summary.php?id=e77-d_12_1321\">A Taxonomy of Mixed Reality Visual Displays</a>. They described a “reality – virtuality continuum” running from the fully real world at one end to a fully virtual one at the other. Mixed reality, in their framing, is everything in between, which includes AR."
+    "The term comes from a 1994 paper by Paul Milgram and Fumio Kishino, <a href=\"https://web.archive.org/web/20230226023428/https://search.ieice.org/bin/summary.php?id=e77-d_12_1321\">A Taxonomy of Mixed Reality Visual Displays</a>. They described a “reality – virtuality continuum” running from the fully real world at one end to a fully virtual one at the other. Mixed reality, in their framing, is everything in between, which includes AR."
    ],
    [
     "p",
