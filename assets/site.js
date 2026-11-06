@@ -31,8 +31,8 @@
     ["The Magic Mirror", "An AR mirror that toggles between a client’s current look and a treatment result in real time.", "#work-nios-mirror"],
     ["The Fudge Hunt", "An augmented wayfinding treasure hunt that turns the venue into a gamified discovery layer.", ""]];
   // from VF's own decks in Drive (Sales Deck and VF Partnerships Deck, read 7 Oct 2026)
-  var TEAM = [["Joshua Gordon", "Founder and CEO", "assets/team/josh.png"], ["Vemir Ambartsoumean", "Sales Manager", "assets/team/vemir.png"],
-              ["Evan Muchnicki", "Project Manager", "assets/team/evan.png"]];
+  var TEAM = [["Joshua Gordon", "Founder and CEO", "/assets/team/josh.png"], ["Vemir Ambartsoumean", "Sales Manager", "/assets/team/vemir.png"],
+              ["Evan Muchnicki", "Project Manager", "/assets/team/evan.png"]];
   var MISSION = ["At Virtual Fudge, our mission is to design immersive AR and VR experiences that look incredible and deliver real value.",
     "Based in New York City, our cross-disciplinary team blends engineering, design, AI, and storytelling to create AR solutions for today’s reality and tomorrow’s possibilities."];
   // partners described, not named (Vemir, 19 Oct)
@@ -45,9 +45,9 @@
   // live demos a visitor can try now, from VF's own codes in Drive (decoded and checked 7 Oct 2026):
   // the hologram opens a Zappar WebAR page; the Noyah Cosmetics code opens the App Store (the Google Play listing returns Not Found)
   var LIVE = {
-    hologram: { title: "The Living Hologram", case: "gortana", qr: "assets/try/gortana-qr.png", url: "https://qr1.be/32QNDZ", logo: true, clip: "gortana",
+    hologram: { title: "The Living Hologram", case: "gortana", qr: "/assets/try/gortana-qr.png", url: "https://qr1.be/32QNDZ", logo: true, clip: "gortana",
       text: "Scan the code, then point your phone at the Virtual Fudge logo. Our founder appears on it and speaks.", phone: "Open it on this phone" },
-    shade: { title: "Shade Match by Noyah Cosmetics", case: "noyah-tryon", qr: "assets/try/noyah-appstore-qr.png", url: "https://apps.apple.com/us/app/noyah-augmented-reality/id6446071291", clip: "tryon-face",
+    shade: { title: "Shade Match by Noyah Cosmetics", case: "noyah-tryon", qr: "/assets/try/noyah-appstore-qr.png", url: "https://apps.apple.com/us/app/noyah-augmented-reality/id6446071291", clip: "tryon-face",
       text: "Scan the code to get the Noyah Cosmetics app on iPhone, then try any shade on your own face, in your own light.", phone: "Open in the App Store" }
   };
   // scan it, or watch it: the recording shows what the code opens, for anyone looking at a desktop
@@ -71,7 +71,7 @@
      cut from "VF Sizzle Reel.mp4" (LED Wall Content) with only VF's own work: its licensed stock shots and the Tokyo TV
      segment are left out until Vemir confirms them (docs/TK.md). [width, height, kind] with kind phone (a screen
      recording) or cam (a camera). */
-  var MEDIA = "assets/media/";
+  var MEDIA = "/assets/media/";
   var CLIPS = {
     "noyah-box": [554, 1200, "phone"], "noyah-bloom": [674, 1200, "phone"], "nrf-tablet": [676, 1200, "cam"],
     "tryon-face": [552, 1200, "phone"], "tryon-app": [554, 1200, "phone"],
@@ -109,7 +109,7 @@
     return '<div class="gallery">' + items.map(function (i) {
       var r = (i[2] / i[3]).toFixed(4);
       return '<figure class="g' + (i[0] === "clip" ? " g-clip" : "") + '" style="--r:' + r + '">' + (i[0] === "clip" ? clipVideo(i[1], i[4])
-        : '<img src="assets/events/' + i[1] + '.jpg" width="' + i[2] + '" height="' + i[3] + '" alt="' + esc(i[4]) + '" loading="lazy" decoding="async">') + "</figure>";
+        : '<img src="/assets/events/' + i[1] + '.jpg" width="' + i[2] + '" height="' + i[3] + '" alt="' + esc(i[4]) + '" loading="lazy" decoding="async">') + "</figure>";
     }).join("") + "</div>";
   }
 
@@ -435,7 +435,7 @@
   // About us: VF's homepage story in its order (About Us, the problem, the answer, the process, the stack), then the people
   // Josh, 28 Oct: "about us more dynamic right now its just a wall of text". The hero is the team itself, at its NRF booth, seen
   // as a phone's AR would see it: the frame locks on and a tag pins each name to its face (where they stand in the photo)
-  var TEAM_PHOTO = { src: "assets/events/nrf-team.jpg", w: 1600, h: 1067, alt: "Evan Muchnicki and Joshua Gordon at the Virtual Fudge booth, NRF 2026.",
+  var TEAM_PHOTO = { src: "/assets/events/nrf-team.jpg", w: 1600, h: 1067, alt: "Evan Muchnicki and Joshua Gordon at the Virtual Fudge booth, NRF 2026.",
     pins: [["Evan Muchnicki", "Project Manager", 29, 30, "left"], ["Joshua Gordon", "Founder and CEO", 73, 25, "right"]] };
   function teamPhoto() {
     var t = TEAM_PHOTO;
@@ -591,10 +591,10 @@
   function aside(a) {
     if (a[0] === "clip") { var c = CLIP_CAP[a[1]]; return clip(a[1], c[0], [c[1], c[1].indexOf("#show") === 0 ? "See the show" : "The project"]).replace('<figure class="clip', '<figure class="aside clip'); }
     if (a[0] === "photo") { var f = photoOf(a[1]); if (!f) return "";
-      return '<figure class="aside aside-photo"><img src="assets/events/' + a[1] + '.jpg" width="' + f[0][2] + '" height="' + f[0][3] + '" alt="' + esc(a[2]) + '" loading="lazy" decoding="async">' +
+      return '<figure class="aside aside-photo"><img src="/assets/events/' + a[1] + '.jpg" width="' + f[0][2] + '" height="' + f[0][3] + '" alt="' + esc(a[2]) + '" loading="lazy" decoding="async">' +
         "<figcaption>" + esc(a[2]) + ' <a class="link" href="#show-' + f[1].id + '">See the show</a></figcaption></figure>'; }
     var name = (ALSO.filter(function (x) { return x[1] === a[1]; })[0] || [""])[0];
-    return '<figure class="aside aside-block"><img src="assets/stills/' + a[1] + '.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">' +
+    return '<figure class="aside aside-block"><img src="/assets/stills/' + a[1] + '.jpg" width="1200" height="1200" alt="" loading="lazy" decoding="async">' +
       "<figcaption>The block of fudge from our homepage, " + BLOCK_CAP[a[1]] + '. <a class="link" href="#for-' + a[1] + '">' + esc(name) + "</a></figcaption></figure>";
   }
   // the post's blocks with its pictures set in, and its opening paragraph marked for the drop cap
@@ -1204,7 +1204,7 @@
       // without the live block (no WebGL, or a stills copy), the page's world stands in its hero as a still
       if (r.stage && root.classList.contains("no-gl")) {
         var img = document.createElement("img"); img.className = "still"; img.alt = ""; img.decoding = "async"; img.width = img.height = 1200;
-        img.src = "assets/stills/" + (STILL[r.stage[0]] || "top") + ".jpg"; $(".page-hero", pages).appendChild(img);
+        img.src = "/assets/stills/" + (STILL[r.stage[0]] || "top") + ".jpg"; $(".page-hero", pages).appendChild(img);
       }
       pages.hidden = false; root.classList.add("on-page"); root.classList.toggle("page-plain", !r.stage);
       if (skip) skip.textContent = "Skip to the content";

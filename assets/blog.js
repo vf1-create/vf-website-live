@@ -11,7 +11,7 @@ window.VFBlog = [
   "category": "AR for brands",
   "minutes": 5,
   "hero": [
-   "assets/blog/ar-customer-education-vf.jpg",
+   "/assets/blog/ar-customer-education-vf.jpg",
    1500,
    634,
    "A visitor films the Magic Mirror on her phone at the Virtual Fudge booth, AWE USA 2026."
@@ -205,7 +205,7 @@ window.VFBlog = [
   "category": "AR for brands",
   "minutes": 6,
   "hero": [
-   "assets/blog/agentic-commerce-ar-vf.jpg",
+   "/assets/blog/agentic-commerce-ar-vf.jpg",
    1500,
    634,
    "Visitors try an AR demo on their phones at the Virtual Fudge booth, NRF 2026."
@@ -409,7 +409,7 @@ window.VFBlog = [
   "category": "AR for CPG & packaging",
   "minutes": 7,
   "hero": [
-   "assets/blog/ar-product-packaging-0.jpg",
+   "/assets/blog/ar-product-packaging-0.jpg",
    1500,
    635,
    "Augmented reality product packaging"
@@ -628,7 +628,7 @@ window.VFBlog = [
   "category": "Buying AR",
   "minutes": 2,
   "hero": [
-   "assets/blog/small-ar-studio-advantages-vf.jpg",
+   "/assets/blog/small-ar-studio-advantages-vf.jpg",
    1500,
    634,
    "The Virtual Fudge team at its booth, Expo West 2026."
@@ -727,7 +727,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 3,
   "hero": [
-   "assets/blog/top-ar-niches-vf.jpg",
+   "/assets/blog/top-ar-niches-vf.jpg",
    1500,
    634,
    "The Virtual Fudge booth at Expo West 2026, with the Magic Mirror and the studio’s services on the wall."
@@ -748,7 +748,7 @@ window.VFBlog = [
    ],
    [
     "img",
-    "assets/blog/top-ar-niches-2.jpg",
+    "/assets/blog/top-ar-niches-2.jpg",
     1536,
     910,
     "A Noyah Cosmetics organic lip balm box held up near the Brooklyn Bridge, with an AR fairy and a flowering branch rising out of it.",
@@ -834,7 +834,7 @@ window.VFBlog = [
   "category": "Buying AR",
   "minutes": 3,
   "hero": [
-   "assets/blog/choosing-an-xr-agency-vf.jpg",
+   "/assets/blog/choosing-an-xr-agency-vf.jpg",
    1500,
    634,
    "The team demoing at the Virtual Fudge booth, NRF 2026."
@@ -954,7 +954,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 7,
   "hero": [
-   "assets/blog/augmented-reality-education-vf.jpg",
+   "/assets/blog/augmented-reality-education-vf.jpg",
    1500,
    634,
    "A globe of chocolate and vanilla fudge, one of the worlds of this site’s fudge block."
@@ -1036,7 +1036,7 @@ window.VFBlog = [
    ],
    [
     "img",
-    "assets/blog/augmented-reality-education-3.jpg",
+    "/assets/blog/augmented-reality-education-3.jpg",
     1536,
     910,
     "A Noyah Cosmetics organic lip balm box held up near the Brooklyn Bridge, with an AR fairy and a flowering branch rising out of it.",
@@ -1177,7 +1177,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 4,
   "hero": [
-   "assets/blog/benefits-ar-architecture-vf.jpg",
+   "/assets/blog/benefits-ar-architecture-vf.jpg",
    1500,
    634,
    "A house of chocolate and vanilla fudge on its plot, one of the worlds of this site’s fudge block."
@@ -1293,7 +1293,7 @@ window.VFBlog = [
   "category": "AR for brands",
   "minutes": 3,
   "hero": [
-   "assets/blog/kpis-xr-marketing-campaign-vf.jpg",
+   "/assets/blog/kpis-xr-marketing-campaign-vf.jpg",
    1500,
    634,
    "Visitors talking with the team at the Virtual Fudge booth, AWE USA 2026."
@@ -1383,7 +1383,7 @@ window.VFBlog = [
   "category": "AR in retail & e-commerce",
   "minutes": 1,
   "hero": [
-   "assets/blog/virtual-try-ons-ar-0.jpg",
+   "/assets/blog/virtual-try-ons-ar-0.jpg",
    876,
    635,
    "The Noyah Cosmetics virtual store: lipsticks, glosses and concealers on floating shelves under a 3D Noyah Cosmetics logo."
@@ -1479,7 +1479,7 @@ window.VFBlog = [
   "category": "AR in retail & e-commerce",
   "minutes": 5,
   "hero": [
-   "assets/blog/augmented-reality-retail-nrf-2026-0.jpg",
+   "/assets/blog/augmented-reality-retail-nrf-2026-0.jpg",
    1500,
    635,
    "Virtual Fudge at NRF 2026"
@@ -1644,7 +1644,7 @@ window.VFBlog = [
   "category": "AR for brands",
   "minutes": 3,
   "hero": [
-   "assets/blog/how-ar-can-help-create-engaging-product-demos-vf.jpg",
+   "/assets/blog/how-ar-can-help-create-engaging-product-demos-vf.jpg",
    1500,
    634,
    "Visitors trying AR demos at the Virtual Fudge booth, NRF 2026."
@@ -1674,7 +1674,7 @@ window.VFBlog = [
    ],
    [
     "img",
-    "assets/blog/how-ar-can-help-create-engaging-product-demos-2.jpg",
+    "/assets/blog/how-ar-can-help-create-engaging-product-demos-2.jpg",
     876,
     548,
     "Noyah Cosmetics virtual store with lipsticks, concealers and lip glosses displayed on floating 3D shelves",
@@ -1763,7 +1763,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 4,
   "hero": [
-   "assets/blog/xr-trends-a-glimpse-into-the-future-vf.jpg",
+   "/assets/blog/xr-trends-a-glimpse-into-the-future-vf.jpg",
    1500,
    634,
    "The Virtual Fudge booth at AWE USA 2026: the LED wall, the chocolate fountain and the red plinths."
@@ -1855,7 +1855,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 5,
   "hero": [
-   "assets/blog/difference-ar-mr-vr-xr-vf.jpg",
+   "/assets/blog/difference-ar-mr-vr-xr-vf.jpg",
    1500,
    634,
    "The Virtual Fudge booth wall at Expo West 2026: Bespoke Augmented Reality Studio, Immersion that Converts, and the studio’s services."
@@ -2139,7 +2139,7 @@ window.VFBlog = [
   "category": "XR trends",
   "minutes": 1,
   "hero": [
-   "assets/blog/fudge-ing-awesome-vf.jpg",
+   "/assets/blog/fudge-ing-awesome-vf.jpg",
    1500,
    634,
    "Two of the team at the Virtual Fudge booth, NRF 2026."

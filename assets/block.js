@@ -180,7 +180,7 @@
   function poster() {
     if (posterEl || glReady) return;
     posterEl = document.createElement("img"); posterEl.id = "stage-poster"; posterEl.alt = ""; posterEl.setAttribute("aria-hidden", "true");
-    posterEl.src = "assets/stills/top.jpg"; canvas.parentNode.insertBefore(posterEl, canvas.nextSibling); placePoster();
+    posterEl.src = "/assets/stills/top.jpg"; canvas.parentNode.insertBefore(posterEl, canvas.nextSibling); placePoster();
     document.documentElement.classList.add("gl-slow");
   }
   function placePoster() {
